@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.laboratory.mapper.LaboratoryMapper">
+
+
+    <resultMap id="resultMap" type="com.ruoyi.project.system.laboratory.domain.Laboratory">
+        <id property="laboratoryId" column="laboratory_id"/>
+        <result property="teachBuildId" column="teach_build_id"/>
+        <result property="laboratoryType" column="laboratory_type"/>
+        <result property="laboratoryNumber" column="laboratory_number"/>
+        <result property="laboratoryImg" column="laboratory_img"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="createTime" column="create_time"/>
+        <association property="dept" column="dept_id" javaType="com.ruoyi.project.system.dept.domain.Dept"
+                     resultMap="deptResult"/>
+        <association property="teachBuild" javaType="com.ruoyi.project.system.teachbuild.domain.TeachBuild">
+            <id property="teachBuildId" column="teach_build_id"/>
+            <result property="teachBuildLocation" column="teach_build_location"/>
+            <result property="teachBuildName" column="teach_build_name"/>
+            <result property="teachBuildImg" column="teach_build_img"/>
+            <result property="teachBuildLayer" column="teach_build_layer"/>
+            <result property="teachBuildLaboratoryCount" column="teach_build_laboratory_count"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+
+        </association>
+    </resultMap>
+    <resultMap id="deptResult" type="com.ruoyi.project.system.dept.domain.Dept">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="status" column="dept_status"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.ruoyi.project.system.laboratory.domain.Laboratory">
+        insert  into sys_laboratory (teach_build_id,laboratory_type,laboratory_number,dept_id,create_time)
+        values (#{teachBuildId}, #{laboratoryType}, #{laboratoryNumber}, #{deptId}, sysdate())
+
+    </insert>
+
+
+    <delete id="deleteByIds" parameterType="map">
+        DELETE FROM sys_laboratory WHERE laboratory_id=#{laboratoryId}
+    </delete>
+    <select id="selectById" resultMap="resultMap" parameterType="map">
+        select t.laboratory_id, a.teach_build_name,
+        a.teach_build_img,a.teach_build_name,a.teach_build_layer,a.teach_build_laboratory_count,a.teach_build_location,
+          t.laboratory_img, t.laboratory_type, t.laboratory_number, t.dept_id,t.create_time,d.dept_name
+        from sys_laboratory t
+        left join sys_dept d on d.dept_id=t.dept_id
+        left join teach_build a on a.teach_build_id=t.teach_build_id
+        where t.laboratory_id=#{laboratoryId}
+    </select>
+    <select id="selectList" resultMap="resultMap">
+        select t.laboratory_id, a.teach_build_name, t.laboratory_type, t.laboratory_number, t.dept_id,t.create_time,d.dept_name
+        from sys_laboratory t
+        left join teach_build a on a.teach_build_id=t.teach_build_id
+        left join sys_dept d on d.dept_id=t.dept_id
+
+    </select>
+</mapper>

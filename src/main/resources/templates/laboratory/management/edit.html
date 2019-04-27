@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link href="/ajax/libs/cropbox/cropbox.css" th:href="@{/ajax/libs/cropbox/cropbox.css}" rel="stylesheet"/>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-dept-edit" th:object="${post}">
+			<input name="deptId" type="hidden" th:field="*{laboratoryId}" />
+			<input id="treeId" name="parentId" type="hidden" th:field="*{deptId}" />
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">所属部门：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" id="treeName" onclick="selectDeptTree()" readonly="true" th:field="*{dept.deptName}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">实验室号码：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="orderNum" th:field="*{laboratoryNumber}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">实验室类型：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="deptName" th:field="*{laboratoryType}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">实验室位置：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="leader" th:field="*{teachBuild.teachBuildLocation}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input class="form-control" disabled type="text" name="phone" th:field="*{createTime}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">教学楼图片：</label>
+				<div class="col-sm-8">
+					<div class="container">
+						<div class="imageBox"  id="teachBuildImgBox">
+							<div class="thumbBox"></div>
+							<div class="spinner" style="display: none">Loading...</div>
+						</div>
+						<div class="action">
+							<div class="new-contentarea tc">
+								<a href="javascript:void(0)" class="upload-img"> <label for="teachBuildImg">上传图像</label> </a>
+								<input type="file" class="" th:src="*{teachBuild.teachBuildImg}" name="teachBuildImg" id="teachBuildImg" accept="image/*"/>
+							</div>
+							<input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"/>
+							<input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-"/>
+							<input type="button" id="blobSubmit" class="Btnsty_peyton" value="提交"/>
+						</div>
+
+					</div>
+
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">教学楼图片：</label>
+				<div class="col-sm-8">
+					<div class="container">
+						<div class="imageBox" id="laboratoryImgBox">
+							<div class="thumbBox"></div>
+							<div class="spinner" style="display: none">Loading...</div>
+						</div>
+						<div class="action">
+							<div class="new-contentarea tc">
+								<a href="javascript:void(0)" class="upload-img"> <label for="laboratoryImg">上传图像</label> </a>
+								<input type="file" class="" th:src="*{laboratoryImg}" name="laboratoryImg" id="laboratoryImg" accept="image/*"/>
+							</div>
+							<input type="button" id="btnZoomIn1" class="Btnsty_peyton" value="+"/>
+							<input type="button" id="btnZoomOut1" class="Btnsty_peyton" value="-"/>
+							<input type="button" id="blobSubmit1" class="Btnsty_peyton" value="提交"/>
+						</div>
+
+					</div>
+
+
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-9">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/cropbox/cropbox.js}"></script>
+	<script  th:inline="javascript">
+		var prefix = ctx + "system/dept"
+
+		$("#form-dept-edit").validate({
+			rules:{
+				deptName:{
+					required:true,
+					remote: {
+		                url: prefix + "/checkDeptNameUnique",
+		                type: "post",
+		                dataType: "json",
+		                data: {
+		                	"deptId": function() {
+		                        return $("input[name='deptId']").val();
+		                    },
+		        			"deptName": function() {
+		                        return $("input[name='deptName']").val();
+		                    }
+		                },
+		                dataFilter: function(data, type) {
+		                    if (data == "0") return true;
+		                    else return false;
+		                }
+		            }
+				},
+				orderNum:{
+					required:true,
+					digits:true
+				},
+			},
+			messages: {
+		        "deptName": {
+		            remote: "部门已经存在"
+		        }
+		    },
+			submitHandler:function(form){
+				$.operate.save(prefix + "/save", $('#form-dept-edit').serialize());
+			}
+		});
+
+		/*部门管理-修改-选择部门树*/
+		function selectDeptTree() {
+			var deptId = $("#treeId").val();
+		    var url = prefix + "/selectDeptTree/" + deptId;
+		    $.modal.open("选择部门", url, '380', '380');
+		}
+
+		$(function () {
+
+			var options = {
+				thumbBox: '#teachBuildImgBox',
+				spinner: '.spinner',
+				imgSrc: $("#teachBuildImg").attr('src')
+			}
+			var options1 = {
+				thumbBox: '#laboratoryImgBox',
+				spinner: '.spinner',
+				imgSrc: $("#laboratoryImg").attr('src')
+			}
+			var cropper = $('#teachBuildImgBox').cropbox(options);
+			debugger
+			var cropper = $('#laboratoryImgBox').cropbox(options1);
+			$('#teachBuildImg').on('change',
+					function () {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							options.imgSrc = e.target.result;
+							//根据MIME判断上传的文件是不是图片类型
+							if ((options.imgSrc).indexOf("image/") == -1) {
+								parent.layer.alert("文件格式错误，请上传图片类型,如：JPG,JEPG，PNG后缀的文件。", {icon: 2, title: "系统提示"});
+							} else {
+								cropper = $('#teachBuildImgBox').cropbox(options);
+							}
+						}
+						reader.readAsDataURL(this.files[0]);
+					})
+			$('#blobSubmit').on('click', function () {
+				var img = cropper.getBlob();
+				var formdata = new FormData();
+				formdata.append("avatarfile", img);
+				formdata.append("userId", $("#userId").val());
+				$.ajax({
+					url: ctx + "system/user/profile/updateAvatar",
+					data: formdata,
+					type: "post",
+					processData: false,
+					contentType: false,
+					success: function (result) {
+						$.operate.saveSuccess(result);
+					}
+				})
+			})
+			$('#laboratoryImg').on('change',
+					function () {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							options1.imgSrc = e.target.result;
+							//根据MIME判断上传的文件是不是图片类型
+							if ((options1.imgSrc).indexOf("image/") == -1) {
+								parent.layer.alert("文件格式错误，请上传图片类型,如：JPG,JEPG，PNG后缀的文件。", {icon: 2, title: "系统提示"});
+							} else {
+								cropper = $('#laboratoryImg').cropbox(options1);
+							}
+						}
+						reader.readAsDataURL(this.files[0]);
+					})
+			$('#blobSubmit1').on('click', function () {
+				var img = cropper.getBlob();
+				var formdata = new FormData();
+				formdata.append("avatarfile", img);
+				formdata.append("userId", $("#userId").val());
+				$.ajax({
+					url: ctx + "system/user/profile/updateAvatar",
+					data: formdata,
+					type: "post",
+					processData: false,
+					contentType: false,
+					success: function (result) {
+						$.operate.saveSuccess(result);
+					}
+				})
+			})
+			$('#btnZoomIn').on('click', function () {
+				cropper.zoomIn();
+			})
+			$('#btnZoomOut').on('click', function () {
+				cropper.zoomOut();
+			})
+			$('#btnZoomIn1').on('click', function () {
+				cropper.zoomIn();
+			})
+			$('#btnZoomOut1').on('click', function () {
+				cropper.zoomOut();
+			})
+		});
+	</script>
+</body>
+</html>
