@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @author ruoyi
  */
-@WebFilter(filterName = "xssFilter", urlPatterns = "/system/*")
+/*@WebFilter(filterName = "xssFilter", urlPatterns = "/system/*")*/
 public class XssFilter implements Filter
 {
 

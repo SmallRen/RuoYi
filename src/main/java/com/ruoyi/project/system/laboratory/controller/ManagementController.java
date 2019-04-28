@@ -1,6 +1,10 @@
 package com.ruoyi.project.system.laboratory.controller;
+import com.ruoyi.common.utils.FileUploadUtils;
 import com.ruoyi.project.system.dept.domain.Dept;
 import com.ruoyi.project.system.dept.service.IDeptService;
+import com.ruoyi.project.system.teachbuild.domain.TeachBuild;
+import com.ruoyi.project.system.teachbuild.service.ITeachBuildService;
+import com.ruoyi.project.system.user.domain.User;
 import org.springframework.ui.Model;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
@@ -14,6 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,7 +28,8 @@ public class ManagementController extends BaseController {
 
     private String prefix = "laboratory/management";
 
-
+@Autowired
+ITeachBuildService iTeachBuildService;
     @Autowired
     private ILaboratoryService service;
 
@@ -91,7 +97,9 @@ public class ManagementController extends BaseController {
     public String add( Model model)
     {
         Dept dept = deptService.selectDeptById(100L);
+        List<TeachBuild> list= iTeachBuildService.findAll();
         model.addAttribute("dept", dept);
+        model.addAttribute("teach", list);
         return prefix + "/add";
     }
     /**
@@ -102,8 +110,10 @@ public class ManagementController extends BaseController {
     @GetMapping("/edit/{laboratoryId}")
     public String edit(@PathVariable("laboratoryId") Long laboratoryId, Model model)
     {
+       List<TeachBuild> list= iTeachBuildService.findAll();
         Laboratory laboratory = service.selectById(laboratoryId);
         model.addAttribute("post", laboratory);
+        model.addAttribute("teach", list);
         return prefix + "/edit";
     }
 
@@ -123,5 +133,48 @@ public class ManagementController extends BaseController {
         }
         return error();
     }
+
+    /**
+     * 保存实验室
+     */
+    @Log(title = "实验室管理", action = BusinessType.SAVE)
+    @RequiresPermissions("laboratory:management:update")
+    @PostMapping("/update")
+    @ResponseBody
+    public AjaxResult update(Laboratory laboratory)
+    {
+        if (service.update(laboratory) > 0)
+        {
+            return success();
+        }
+        return error();
+    }
+
+    /**
+     * 保存头像
+     */
+    @Log(title = "个人信息", action = BusinessType.SAVE)
+    @PostMapping("/uploadImg")
+    @ResponseBody
+    public AjaxResult updateAvatar(@RequestHeader Long laboratoryId, @RequestParam("avatarfile") MultipartFile file)
+    {
+        try
+        {
+            if (!file.isEmpty())
+            {
+                String laboratoryImg = FileUploadUtils.upload(file);
+                service.updateImg(laboratoryImg,laboratoryId);
+                    return success().put("name",laboratoryImg);
+
+            }
+            return error();
+        }
+        catch (Exception e)
+        {
+            return error(e.getMessage());
+        }
+    }
+
+
 
 }

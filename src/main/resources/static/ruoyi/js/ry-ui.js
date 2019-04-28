@@ -254,18 +254,29 @@
             }, add: function (id) {
                 var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.open("添加" + $.table._option.modalName, url)
+            }, addLaboratory: function (id) {
+                var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
+                $.modal.open("添加" + $.table._option.modalName, url,1200)
             }, edit: function (id) {
                 var url = $.table._option.updateUrl.replace("{id}", id);
                 $.modal.open("修改" + $.table._option.modalName, url)
-            }, addFull: function (id) {
+            }
+           , editLaboratory: function (id) {
+                var url = $.table._option.updateUrl.replace("{id}", id);
+                $.modal.open("修改" + $.table._option.modalName, url,1200)
+            }
+            , addFull: function (id) {
                 var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.openFull("添加" + $.table._option.modalName, url)
             }, editFull: function (id) {
                 var url = $.table._option.updateUrl.replace("{id}", id);
                 $.modal.openFull("修改" + $.table._option.modalName, url)
             }, save: function (url, data) {
+                console.log(url)
+                debugger
                 $.modal.loading("正在处理中，请稍后...");
                 var config = {
+
                     url: url, type: "post", dataType: "json", data: data, success: function (result) {
                         $.operate.saveSuccess(result)
                     }

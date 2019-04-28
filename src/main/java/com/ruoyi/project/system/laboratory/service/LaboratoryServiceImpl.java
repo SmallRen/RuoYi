@@ -31,4 +31,14 @@ public class LaboratoryServiceImpl implements ILaboratoryService {
     public Long save(Laboratory laboratory) {
         return mapper.save(laboratory);
     }
+
+    @Override
+    public void updateImg(String laboratoryImg,Long laboratoryId) {
+        mapper.updateImg(laboratoryImg,laboratoryId);
+    }
+
+    @Override
+    public Long update(Laboratory laboratory) {
+       return mapper.update(laboratory);
+    }
 }

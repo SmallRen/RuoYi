@@ -17,6 +17,7 @@ public class Laboratory extends SimpleSession {
     private String laboratoryNumber;
     private Long deptId;
     private Long teachBuildId;
+    private Long laboratorySeating;
     private String laboratoryImg;
     private Date createTime;
     private Dept dept;
@@ -24,6 +25,14 @@ public class Laboratory extends SimpleSession {
 
     public String getLaboratoryImg() {
         return laboratoryImg;
+    }
+
+    public Long getLaboratorySeating() {
+        return laboratorySeating;
+    }
+
+    public void setLaboratorySeating(Long laboratorySeating) {
+        this.laboratorySeating = laboratorySeating;
     }
 
     public void setLaboratoryImg(String laboratoryImg) {

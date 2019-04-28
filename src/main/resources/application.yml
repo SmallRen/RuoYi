@@ -42,7 +42,7 @@ spring:
       max-request-size: 30Mb
   devtools:
     restart:
-      enabled: true    
+      enabled: true
 # MyBatis
 mybatis:
     # 搜索指定包别名
@@ -86,3 +86,4 @@ shiro:
     dbSyncPeriod: 1
     # 相隔多久检查一次session的有效性，默认就是10分钟
     validationInterval: 10
+

@@ -1,109 +1,250 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<link href="/ajax/libs/cropbox/cropbox.css" th:href="@{/ajax/libs/cropbox/cropbox.css}" rel="stylesheet"/>
 <body class="white-bg">
-	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
-		<form class="form-horizontal m" id="form-dept-add">
-			<input id="treeId" name="parentId" type="hidden" th:value="${dept.deptId}"   />
-			<div class="form-group">
-				<label class="col-sm-3 control-label ">上级部门：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" th:value="${dept.deptName}"/>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">部门名称：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="deptName">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">显示排序：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="orderNum">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">负责人：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="leader">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">联系电话：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="phone">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">邮箱：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="email">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">部门状态：</label>
-				<div class="col-sm-8" th:with="type=${@dictService.selectDictData('sys_normal_disable')}">
-					<div th:each="dict : ${type}" th:class="${dict['cssClass']}">
-						<input type="radio" th:id="${dict['dictCode']}" name="status" th:value="${dict['dictValue']}" th:checked="${dict['isDefault'] == 'Y' ? true : false}">
-						<label th:for="${dict['dictCode']}" th:text="${dict['dictLabel']}"></label>
-					</div>
-				</div>
-			</div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-dept-edit">
+        <input name="laboratoryId" type="hidden"/>
+        <input name="deptId" id="treeId" type="hidden" th:value="${dept.deptId}"/>
+        <input name="laboratoryImg" type="hidden"/>
 
-			<div class="form-group">
-				<div class="form-control-static col-sm-offset-9">
-					<button type="submit" class="btn btn-primary">提交</button>
-					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
-				</div>
-			</div>
-		</form>
-	</div>
-	<div th:include="include::footer"></div>
-	<script type="text/javascript">
-		var prefix = ctx + "system/dept"
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label ">所属部门：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" id="treeName" onclick="selectDeptTree()" readonly="true"
+                           th:value="${dept.deptName}"/>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">创建时间：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" disabled type="createTime" name="phone">
+                </div>
+            </div>
+        </div>
 
-		$("#form-dept-add").validate({
-			rules:{
-				deptName:{
-					required:true,
-					remote: {
-		                url: prefix + "/checkDeptNameUnique",
-		                type: "post",
-		                dataType: "json",
-		                data: {
-		                	"deptName" : function() {
-		                        return $("input[name='deptName']").val();
-		                    }
-		                },
-		                dataFilter: function(data, type) {
-		                    if (data == "0") return true;
-		                    else return false;
-		                }
-		            }
-				},
-				orderNum:{
-					required:true,
-					digits:true
-				},
-			},
-			messages: {
-		        "deptName": {
-		            remote: "部门已经存在"
-		        }
-		    },
-			submitHandler:function(form){
-				$.operate.save(prefix + "/save", $('#form-dept-add').serialize());
-			}
-		});
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">实验室类型：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="laboratoryType">
+                </div>
+            </div>
 
-		/*部门管理-新增-选择父部门树*/
-		function selectDeptTree() {
-		    var deptId = $("#treeId").val();
-			var url = prefix + "/selectDeptTree/" + deptId;
-			$.modal.open("选择部门", url, '380', '380');
-		}
-	</script>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">座位数：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="laboratorySeating">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">实验室号码：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" name="laboratoryNumber">
+                </div>
+            </div>
+        </div>
+        <div class="layui-anim layui-anim-up layui-anim-loop"></div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">教学楼：</label>
+                <div class="col-sm-8">
+                    <select name="teachBuildId" class="form-control">
+                        <option th:each="e,index : ${teach}" th:text="${e.teachBuildName}" selected
+
+                                th:value="${e.teachBuildId}"></option>
+                    </select>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">实验室图片：</label>
+                <div class="col-sm-8">
+                    <div class="container">
+                        <div class="imageBox" id="teachBuildImgBox" style="width:350px;height: 300px">
+                            <div class="thumbBox" th:width="300" id="thumbBox"></div>
+                            <div class="spinner" style="display: none">Loading...</div>
+                        </div>
+                        <div class="action">
+                            <div class="new-contentarea tc">
+                                <a href="javascript:void(0)" class="upload-img"> <label for="teachBuildImg">上传图像</label>
+                                </a>
+                                <input type="file" class="" id="teachBuildImg" accept="image/*"/>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">教学楼图片：</label>
+                <div class="col-sm-8">
+                    <img id="teachBuildImage" width="300px">
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-control-static col-sm-offset-10">
+                <button type="submit" class="btn btn-primary">提交</button>
+                <button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/cropbox/cropbox.js}"></script>
+<script th:inline="javascript">
+    var prefix = ctx + "system/dept"
+
+    $("#form-dept-edit").validate({
+        rules: {
+            deptName: {
+                required: true,
+                remote: {
+                    url: prefix + "/checkDeptNameUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "deptId": function () {
+                            return $("input[name='deptId']").val();
+                        },
+                        "deptName": function () {
+                            return $("input[name='deptName']").val();
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        if (data == "0") return true;
+                        else return false;
+                    }
+                }
+            },
+            orderNum: {
+                required: true,
+                digits: true
+            },
+        },
+        messages: {
+            "deptName": {
+                remote: "部门已经存在"
+            }
+        },
+        submitHandler: function (form) {
+            $.modal.loading("正在处理中，请稍后...");
+            var img = cropper.getBlob();
+            var formdata = new FormData();
+            formdata.append("avatarfile", img);
+            formdata.append("userId", $("#userId").val());
+            $.ajax({
+                url: ctx + "laboratory/management/uploadImg",
+                data: formdata,
+                type: "post",
+                headers: {laboratoryId: [[${laboratoryId}]]},
+                processData: false,
+                contentType: false,
+                async: false,
+                success: function (result) {
+                    console.log(result)
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess("图片上传成功")
+                        $("input[name=laboratoryImg]").val(result.name)
+                        $.modal.closeLoading();
+                    }
+                }
+            })
+            $.operate.save("/laboratory/management/save", $('#form-dept-edit').serialize());
+        }
+    });
+
+    /*部门管理-修改-选择部门树*/
+    function selectDeptTree() {
+        var deptId = $("#treeId").val();
+        var url = prefix + "/selectDeptTree/" + deptId;
+        $.modal.open("选择部门", url, '380', '380');
+    }
+
+    var cropper;
+    $(function () {
+
+        var options = {
+            thumbBox: '#thumbBox',
+            spinner: '.spinner',
+            imgSrc: '/img/profile.jpg'
+        }
+        cropper = $('#teachBuildImgBox').cropbox(options);
+        //var cropper1 = $('#laboratoryImgBox').cropbox(options1);
+        $('#teachBuildImg').on('change',
+            function () {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    options.imgSrc = e.target.result;
+                    //根据MIME判断上传的文件是不是图片类型
+                    if ((options.imgSrc).indexOf("image/") == -1) {
+                        parent.layer.alert("文件格式错误，请上传图片类型,如：JPG,JEPG，PNG后缀的文件。", {icon: 2, title: "系统提示"});
+                    } else {
+                        cropper = $('#teachBuildImgBox').cropbox(options);
+                    }
+                }
+                reader.readAsDataURL(this.files[0]);
+            })
+        $('#blobSubmit').on('click', function () {
+            /*$.modal.loading("正在处理中，请稍后...");
+            var img = cropper.getBlob();
+            var formdata = new FormData();
+            formdata.append("avatarfile", img);
+            formdata.append("userId", $("#userId").val());
+            $.ajax({
+                url: ctx + "laboratory/management/uploadImg",
+                data: formdata,
+                type: "post",
+                headers: {laboratoryId: [[${laboratoryId}]]},
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    console.log(result)
+                    if (result.code == web_status.SUCCESS) {
+                        $.modal.msgSuccess("图片上传成功")
+                        $("input[name=laboratoryImg]").val( result.name)
+                        $.modal.closeLoading();
+                    }
+                }
+            })*/
+        })
+        $('#btnZoomIn').on('click', function () {
+            cropper.zoomIn();
+        })
+        $('#btnZoomOut').on('click', function () {
+            cropper.zoomOut();
+        })
+        $("select[name=teachBuildId]").on('change', function () {
+            findBuildLoadImg(this.value);
+
+        });
+        findBuildLoadImg($("select[name=teachBuildId]").val());
+    })
+
+    function findBuildLoadImg(value) {
+        $.ajax({
+            url: ctx + "teachBuild/management/find",
+            data: {id: value},
+            get: "post",
+            success: function (result) {
+                debugger
+                $("#teachBuildImage").attr("src", "/profile/" + result.teachBuildImg);
+            }
+        })
+    }
+</script>
 </body>
 </html>

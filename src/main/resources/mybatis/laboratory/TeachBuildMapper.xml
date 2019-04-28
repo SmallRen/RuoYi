@@ -13,5 +13,9 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+    <select id="find"   resultMap="resultMap"  parameterType="java.lang.Long">
+        select * from Teach_Build where teach_build_id=#{id}
+
+    </select>
 
 </mapper>

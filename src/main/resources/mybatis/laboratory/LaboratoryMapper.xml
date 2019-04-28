@@ -11,6 +11,7 @@
         <result property="laboratoryType" column="laboratory_type"/>
         <result property="laboratoryNumber" column="laboratory_number"/>
         <result property="laboratoryImg" column="laboratory_img"/>
+        <result property="laboratorySeating" column="laboratory_seating"/>
         <result property="deptId" column="dept_id"/>
         <result property="createTime" column="create_time"/>
         <association property="dept" column="dept_id" javaType="com.ruoyi.project.system.dept.domain.Dept"
@@ -36,17 +37,24 @@
     </resultMap>
 
     <insert id="save" parameterType="com.ruoyi.project.system.laboratory.domain.Laboratory">
-        insert  into sys_laboratory (teach_build_id,laboratory_type,laboratory_number,dept_id,create_time)
-        values (#{teachBuildId}, #{laboratoryType}, #{laboratoryNumber}, #{deptId}, sysdate())
-
+        insert  into sys_laboratory (laboratory_type,laboratory_number,dept_id,create_time,laboratory_img,laboratory_seating,teachBuildId)
+        values ( #{laboratoryType}, #{laboratoryNumber}, #{deptId}, sysdate(),#{laboratoryImg},#{laboratorySeating},#{teach_Build_Id})
     </insert>
+    <update id="updateImg" parameterType="map">
+        update sys_laboratory set laboratory_img=#{laboratoryImg} where laboratory_Id=#{laboratoryId}
+    </update>
+    <update id="update" parameterType="com.ruoyi.project.system.laboratory.domain.Laboratory">
+        update sys_laboratory set teach_build_id=#{teachBuildId},laboratory_type=#{laboratoryType},laboratory_seating=#{laboratorySeating},
+        laboratory_number= #{laboratoryNumber},dept_id=#{deptId},update_time=sysdate() ,laboratory_img=#{laboratoryImg}
+        where laboratory_id=#{laboratoryId}
+    </update>
 
 
     <delete id="deleteByIds" parameterType="map">
         DELETE FROM sys_laboratory WHERE laboratory_id=#{laboratoryId}
     </delete>
     <select id="selectById" resultMap="resultMap" parameterType="map">
-        select t.laboratory_id, a.teach_build_name,
+        select t.laboratory_id, a.teach_build_name,t.laboratory_Img,t.laboratory_seating,
         a.teach_build_img,a.teach_build_name,a.teach_build_layer,a.teach_build_laboratory_count,a.teach_build_location,
           t.laboratory_img, t.laboratory_type, t.laboratory_number, t.dept_id,t.create_time,d.dept_name
         from sys_laboratory t
@@ -55,10 +63,10 @@
         where t.laboratory_id=#{laboratoryId}
     </select>
     <select id="selectList" resultMap="resultMap">
-        select t.laboratory_id, a.teach_build_name, t.laboratory_type, t.laboratory_number, t.dept_id,t.create_time,d.dept_name
+        select t.laboratory_id, a.teach_build_name, t.laboratory_type, t.laboratory_number, t.dept_id,t.create_time,d.dept_name,t.laboratory_seating
         from sys_laboratory t
         left join teach_build a on a.teach_build_id=t.teach_build_id
-        left join sys_dept d on d.dept_id=t.dept_id
+        left join sys_dept d on d.dept_id=t.dept_id order by t.laboratory_id
 
     </select>
 </mapper>

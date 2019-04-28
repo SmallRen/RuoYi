@@ -30,4 +30,17 @@ public interface ILaboratoryService {
      * @return
      */
     Long save(Laboratory laboratory);
+
+    /**
+     * 插入图片
+     * @param laboratoryImg
+     */
+    void updateImg(String laboratoryImg,Long laboratoryId);
+
+    /**
+     * 更新
+     * @param laboratory
+     * @return
+     */
+    Long update(Laboratory laboratory);
 }
