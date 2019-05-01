@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.laboratory.mapper;
 
 import com.ruoyi.project.system.laboratory.domain.Laboratory;
+import com.ruoyi.project.system.table.domain.SysTable;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,4 +42,8 @@ public interface LaboratoryMapper {
     void updateImg(@Param("laboratoryImg") String laboratoryImg, @Param("laboratoryId") Long laboratoryId);
 
     Long update(Laboratory laboratory);
+
+    List<Laboratory> findLaboratoryByBuildId(Long id);
+
+
 }

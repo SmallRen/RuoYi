@@ -240,7 +240,7 @@
                     var data = {"ids": id};
                     $.operate.submit(url, "post", "json", data)
                 })
-            }, batRemove: function () {
+            },  batRemove: function () {
                 var rows = $.common.isEmpty($.table._option.id) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.id);
                 if (rows.length == 0) {
                     $.modal.alertWarning("请至少选择一条记录");
@@ -252,14 +252,29 @@
                     $.operate.submit(url, "post", "json", data)
                 })
             }, add: function (id) {
+                debugger
                 var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.open("添加" + $.table._option.modalName, url)
-            }, addLaboratory: function (id) {
+            }
+            , addLaboratory: function (id) {
                 var url = $.common.isEmpty(id) ? $.table._option.createUrl : $.table._option.createUrl.replace("{id}", id);
                 $.modal.open("添加" + $.table._option.modalName, url,1200)
+            },
+            addCustom: function (width,height) {
+
+                $.modal.open("添加" + $.table._option.modalName, $.table._option.createUrl,width,height);
             }, edit: function (id) {
                 var url = $.table._option.updateUrl.replace("{id}", id);
                 $.modal.open("修改" + $.table._option.modalName, url)
+            },
+            findTable: function (id) {
+                var url = $.table._option.findTable.replace("{id}", id);
+                $.modal.open("预约" + $.table._option.modalName, url)
+            },
+
+            editCustom: function (id,width,height) {
+                var url = $.table._option.updateUrl.replace("{id}", id);
+                $.modal.open("修改" + $.table._option.modalName, url,width,height)
             }
            , editLaboratory: function (id) {
                 var url = $.table._option.updateUrl.replace("{id}", id);

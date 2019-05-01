@@ -1,6 +1,7 @@
 package com.ruoyi.project.system.laboratory.service;
 
 import com.ruoyi.project.system.laboratory.domain.Laboratory;
+import com.ruoyi.project.system.table.domain.SysTable;
 
 import java.util.List;
 
@@ -43,4 +44,7 @@ public interface ILaboratoryService {
      * @return
      */
     Long update(Laboratory laboratory);
+
+    List<Laboratory> findLaboratoryByBuildId(Long id);
+
 }

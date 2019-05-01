@@ -91,7 +91,7 @@
             <div class="form-group col-sm-6">
                 <label class="col-sm-3 control-label">教学楼图片：</label>
                 <div class="col-sm-8">
-                    <img th:src="*{teachBuild.teachBuildImg}" width="300px">
+                    <img th:src="'/profile/'+*{teachBuild.teachBuildImg}" id="teachBuildImage" width="300px">
 
                 </div>
             </div>
@@ -184,13 +184,7 @@
             spinner: '.spinner',
             imgSrc: $("#teachBuildImg").attr('src')
         }
-        var options1 = {
-            thumbBox: '#laboratoryImgBox',
-            spinner: '.spinner',
-            imgSrc: $("#laboratoryImg").attr('src')
-        }
         cropper = $('#teachBuildImgBox').cropbox(options);
-        //var cropper1 = $('#laboratoryImgBox').cropbox(options1);
         $('#teachBuildImg').on('change',
             function () {
                 var reader = new FileReader();
@@ -205,37 +199,29 @@
                 }
                 reader.readAsDataURL(this.files[0]);
             })
-        $('#blobSubmit').on('click', function () {
-            /*$.modal.loading("正在处理中，请稍后...");
-            var img = cropper.getBlob();
-            var formdata = new FormData();
-            formdata.append("avatarfile", img);
-            formdata.append("userId", $("#userId").val());
-            $.ajax({
-                url: ctx + "laboratory/management/uploadImg",
-                data: formdata,
-                type: "post",
-                headers: {laboratoryId: [[${laboratoryId}]]},
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                    console.log(result)
-                    if (result.code == web_status.SUCCESS) {
-                        $.modal.msgSuccess("图片上传成功")
-                        $("input[name=laboratoryImg]").val( result.name)
-                        $.modal.closeLoading();
-                    }
-                }
-            })*/
-        })
+
         $('#btnZoomIn').on('click', function () {
             cropper.zoomIn();
         })
         $('#btnZoomOut').on('click', function () {
             cropper.zoomOut();
         })
+        $("select[name=teachBuildId]").on('change', function () {
+            findBuildLoadImg(this.value);
 
-    });
+        });
+        findBuildLoadImg($("select[name=teachBuildId]").val());
+    })
+
+    function findBuildLoadImg(value) {
+        $.ajax({
+            url: ctx + "laboratory/build/find/" + value,
+            type: "GET",
+            success: function (result) {
+                $("#teachBuildImage").attr("src", "/profile/" + result.teachBuildImg);
+            }
+        })
+    }
 </script>
 </body>
 </html>

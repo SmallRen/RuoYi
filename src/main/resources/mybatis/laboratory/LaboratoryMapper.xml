@@ -16,7 +16,7 @@
         <result property="createTime" column="create_time"/>
         <association property="dept" column="dept_id" javaType="com.ruoyi.project.system.dept.domain.Dept"
                      resultMap="deptResult"/>
-        <association property="teachBuild" javaType="com.ruoyi.project.system.teachbuild.domain.TeachBuild">
+        <association property="teachBuild" javaType="com.ruoyi.project.system.build.domain.Build">
             <id property="teachBuildId" column="teach_build_id"/>
             <result property="teachBuildLocation" column="teach_build_location"/>
             <result property="teachBuildName" column="teach_build_name"/>
@@ -37,15 +37,15 @@
     </resultMap>
 
     <insert id="save" parameterType="com.ruoyi.project.system.laboratory.domain.Laboratory">
-        insert  into sys_laboratory (laboratory_type,laboratory_number,dept_id,create_time,laboratory_img,laboratory_seating,teachBuildId)
-        values ( #{laboratoryType}, #{laboratoryNumber}, #{deptId}, sysdate(),#{laboratoryImg},#{laboratorySeating},#{teach_Build_Id})
+        insert  into sys_laboratory (laboratory_type,laboratory_number,dept_id,create_time,laboratory_img,laboratory_seating,teach_Build_Id)
+        values ( #{laboratoryType}, #{laboratoryNumber}, #{deptId}, sysdate(),#{laboratoryImg},#{laboratorySeating},#{teachBuildId})
     </insert>
     <update id="updateImg" parameterType="map">
         update sys_laboratory set laboratory_img=#{laboratoryImg} where laboratory_Id=#{laboratoryId}
     </update>
     <update id="update" parameterType="com.ruoyi.project.system.laboratory.domain.Laboratory">
         update sys_laboratory set teach_build_id=#{teachBuildId},laboratory_type=#{laboratoryType},laboratory_seating=#{laboratorySeating},
-        laboratory_number= #{laboratoryNumber},dept_id=#{deptId},update_time=sysdate() ,laboratory_img=#{laboratoryImg}
+        laboratory_number= #{laboratoryNumber},dept_id=#{deptId},update_time=sysdate(),laboratory_img=#{laboratoryImg}
         where laboratory_id=#{laboratoryId}
     </update>
 
@@ -68,5 +68,8 @@
         left join teach_build a on a.teach_build_id=t.teach_build_id
         left join sys_dept d on d.dept_id=t.dept_id order by t.laboratory_id
 
+    </select>
+    <select id="findLaboratoryByBuildId" resultMap="resultMap" resultType="java.lang.Long">
+        select * from sys_laboratory where teach_build_id = #{id}
     </select>
 </mapper>

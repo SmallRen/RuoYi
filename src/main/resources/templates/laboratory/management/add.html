@@ -234,13 +234,13 @@
         findBuildLoadImg($("select[name=teachBuildId]").val());
     })
 
+
+
     function findBuildLoadImg(value) {
         $.ajax({
-            url: ctx + "teachBuild/management/find",
-            data: {id: value},
-            get: "post",
+            url: ctx + "laboratory/build/find/" + value,
+            type: "GET",
             success: function (result) {
-                debugger
                 $("#teachBuildImage").attr("src", "/profile/" + result.teachBuildImg);
             }
         })

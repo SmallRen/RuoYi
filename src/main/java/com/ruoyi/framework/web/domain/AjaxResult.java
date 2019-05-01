@@ -30,6 +30,16 @@ public class AjaxResult extends HashMap<String, Object>
 
     /**
      * 返回错误消息
+     *
+     * @return 错误消息
+     */
+    public static AjaxResult foreignKeyError()
+    {
+        return error(2, "有关联的实验室，不允许删除教学楼");
+    }
+
+    /**
+     * 返回错误消息
      * 
      * @param msg 内容
      * @return 错误消息

@@ -2,6 +2,7 @@ package com.ruoyi.project.system.laboratory.service;
 
 import com.ruoyi.project.system.laboratory.domain.Laboratory;
 import com.ruoyi.project.system.laboratory.mapper.LaboratoryMapper;
+import com.ruoyi.project.system.table.domain.SysTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,19 @@ public class LaboratoryServiceImpl implements ILaboratoryService {
     }
 
     @Override
-    public void updateImg(String laboratoryImg,Long laboratoryId) {
-        mapper.updateImg(laboratoryImg,laboratoryId);
+    public void updateImg(String laboratoryImg, Long laboratoryId) {
+        mapper.updateImg(laboratoryImg, laboratoryId);
     }
 
     @Override
     public Long update(Laboratory laboratory) {
-       return mapper.update(laboratory);
+        return mapper.update(laboratory);
     }
+
+    @Override
+    public List<Laboratory> findLaboratoryByBuildId(Long id) {
+        return mapper.findLaboratoryByBuildId(id);
+    }
+
+
 }

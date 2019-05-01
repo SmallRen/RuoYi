@@ -1,7 +1,7 @@
 package com.ruoyi.project.system.laboratory.domain;
 
+import com.ruoyi.project.system.build.domain.Build;
 import com.ruoyi.project.system.dept.domain.Dept;
-import com.ruoyi.project.system.teachbuild.domain.TeachBuild;
 import org.apache.shiro.session.mgt.SimpleSession;
 
 import javax.xml.crypto.Data;
@@ -21,7 +21,7 @@ public class Laboratory extends SimpleSession {
     private String laboratoryImg;
     private Date createTime;
     private Dept dept;
-    private TeachBuild teachBuild;
+    private Build teachBuild;
 
     public String getLaboratoryImg() {
         return laboratoryImg;
@@ -43,11 +43,11 @@ public class Laboratory extends SimpleSession {
         return teachBuildId;
     }
 
-    public TeachBuild getTeachBuild() {
+    public Build getTeachBuild() {
         return teachBuild;
     }
 
-    public void setTeachBuild(TeachBuild teachBuild) {
+    public void setTeachBuild(Build teachBuild) {
         this.teachBuild = teachBuild;
     }
 

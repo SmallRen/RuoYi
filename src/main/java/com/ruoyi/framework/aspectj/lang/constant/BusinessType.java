@@ -10,6 +10,9 @@ public class BusinessType
 {
     /** 其它 */
     public static final String OTHER = "0";
+    /** 查询 */
+    public static final String SELECT = "11";
+
     /** 新增 */
     public static final String INSERT = "1";
     /** 修改 */
