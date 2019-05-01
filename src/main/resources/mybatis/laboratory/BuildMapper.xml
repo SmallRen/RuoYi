@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.build.mapper.BuildMapper">
+
+
+    <resultMap id="resultMap" type="com.ruoyi.project.system.build.domain.Build">
+        <id property="teachBuildId" column="teach_build_id"/>
+        <result property="teachBuildLocation" column="teach_build_location"/>
+        <result property="teachBuildName" column="teach_build_name"/>
+        <result property="teachBuildImg" column="teach_build_img"/>
+        <result property="teachBuildLayer" column="teach_build_layer"/>
+        <result property="teachBuildLaboratoryCount" column="teach_build_laboratory_count"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+
+    </resultMap>
+    <sql id="baseFiled">
+teach_build_id,teach_build_location,teach_build_name,teach_build_img,teach_build_layer,teach_build_laboratory_count,create_time,update_time
+</sql>
+    <insert id="save" parameterType="com.ruoyi.project.system.build.domain.Build">
+        insert into teach_build  (teach_build_location,teach_build_name,teach_build_img,teach_build_layer,teach_build_laboratory_count,create_time,update_time)
+        values (#{teachBuildLocation},#{teachBuildName},#{teachBuildImg},#{teachBuildLayer},#{teachBuildLaboratoryCount},#{createTime},sysdate())
+
+    </insert>
+    <update id="update" parameterType="com.ruoyi.project.system.build.domain.Build">
+          update  teach_build set
+          teach_build_location=#{teachBuildLocation},
+          teach_build_name=#{teachBuildName},
+          teach_build_img=#{teachBuildImg},
+          teach_build_layer=#{teachBuildLayer},
+          teach_build_laboratory_count=#{teachBuildLaboratoryCount},
+          update_time=sysdate()
+          where teach_build_id=#{teachBuildId}
+
+
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from teach_build   where teach_build_id=#{teachBuildId}
+    </delete>
+    <select id="findAll" resultType="com.ruoyi.project.system.build.domain.Build" resultMap="resultMap">
+
+        select * from   teach_build
+    </select>
+    <select id="find" resultType="com.ruoyi.project.system.build.domain.Build"  parameterType="java.lang.Long"  resultMap="resultMap">
+
+        select * from  teach_build   where teach_build_id=#{teachBuildId}
+    </select>
+
+</mapper>

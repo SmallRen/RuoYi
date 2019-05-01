@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.subscribe.mapper.SubscribeMapper">
+
+
+    <resultMap id="resultMap" type="com.ruoyi.project.system.subscribe.domain.Subscribe">
+
+        <id property="subscribeId" column="subscribe_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="tomorrowTime" column="tomorrow_time"/>
+        <result property="dayTime" column="day_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="sysLaboratoryLd" column="sys_laboratory_id"/>
+        <result property="tableId" column="table_id"/>
+        <association property="sysTable" javaType="com.ruoyi.project.system.table.domain.SysTable">
+            <id property="tableId" column="table_id"/>
+            <result property="tableName" column="table_name"/>
+            <result property="tableNumber" column="table_number"/>
+            <result property="tableStatus" column="table_status"/>
+            <result property="tableRemark" column="table_remark"/>
+        </association>
+        <association property="laboratory" javaType="com.ruoyi.project.system.laboratory.domain.Laboratory">
+            <id property="laboratoryId" column="laboratory_id"/>
+            <result property="teachBuildId" column="teach_build_id"/>
+            <result property="laboratoryType" column="laboratory_type"/>
+            <result property="laboratoryNumber" column="laboratory_number"/>
+            <result property="laboratoryImg" column="laboratory_img"/>
+            <result property="laboratorySeating" column="laboratory_seating"/>
+            <result property="deptId" column="dept_id"/>
+            <association property="teachBuild" javaType="com.ruoyi.project.system.build.domain.Build">
+                <id property="teachBuildId" column="teach_build_id"/>
+                <result property="teachBuildLocation" column="teach_build_location"/>
+                <result property="teachBuildName" column="teach_build_name"/>
+                <result property="teachBuildImg" column="teach_build_img"/>
+                <result property="teachBuildLayer" column="teach_build_layer"/>
+                <result property="teachBuildLaboratoryCount" column="teach_build_laboratory_count"/>
+            </association>
+        </association>
+    </resultMap>
+    <insert id="insert" parameterType="com.ruoyi.project.system.subscribe.domain.Subscribe">
+        insert into subscribe (create_time,tomorrow_time,user_id,sys_laboratory_id,day_time,table_id)
+        values (sysdate(),#{tomorrowTime},#{userId},#{sysLaboratoryLd},#{dayTime},#{tableId})
+    </insert>
+    <select id="findAll" resultMap="resultMap">
+        SELECT  * FROM subscribe t
+        LEFT JOIN sys_laboratory a on t.sys_laboratory_id=a.laboratory_id
+        LEFT JOIN teach_build b on b.teach_build_id=a.teach_build_id
+        LEFT JOIN sys_table e on e.table_id=t.table_id
+    </select>
+</mapper>
