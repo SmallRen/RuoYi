@@ -2,6 +2,7 @@ package com.ruoyi.project.system.subscribe.domain;
 
 import com.ruoyi.project.system.laboratory.domain.Laboratory;
 import com.ruoyi.project.system.table.domain.SysTable;
+import com.ruoyi.project.system.user.domain.User;
 
 import java.util.Date;
 
@@ -11,9 +12,18 @@ public class Subscribe {
     private String tomorrowTime;// subscribe_time
     private String dayTime;// subscribe_time
     private Long userId;//   user_id
-    private Long sysLaboratoryLd;// sys_laboratory_id
+    private Long sysLaboratoryId;// sys_laboratory_id
     private Laboratory laboratory;
     private Long tableId;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getTomorrowTime() {
         return tomorrowTime;
@@ -81,11 +91,11 @@ public class Subscribe {
         this.userId = userId;
     }
 
-    public Long getSysLaboratoryLd() {
-        return sysLaboratoryLd;
+    public Long getSysLaboratoryId() {
+        return sysLaboratoryId;
     }
 
-    public void setSysLaboratoryLd(Long sysLaboratoryLd) {
-        this.sysLaboratoryLd = sysLaboratoryLd;
+    public void setSysLaboratoryId(Long sysLaboratoryId) {
+        this.sysLaboratoryId = sysLaboratoryId;
     }
 }

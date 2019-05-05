@@ -32,7 +32,7 @@ public class AddressUtils
      */
     private static String sendPost(String content, String encoding)
     {
-        URL url = null;
+      /*  URL url = null;
         HttpURLConnection connection = null;
         try
         {
@@ -70,13 +70,13 @@ public class AddressUtils
             {
                 connection.disconnect();
             }
-        }
+        }*/
         return null;
     }
 
     public static String getRealAddressByIP(String ip)
     {
-        String address = "";
+       /* String address = "";
         try
         {
             address = sendPost("ip=" + ip, Constants.UTF8);
@@ -91,7 +91,8 @@ public class AddressUtils
         {
             log.error("根据IP获取所在位置----------错误消息：" + e.getMessage());
         }
-        return address;
+        return address;*/
+       return "";
     }
 
 }

@@ -31,18 +31,18 @@ import com.ruoyi.project.system.user.domain.User;
  * 
  * @author ruoyi
  */
-@Aspect
+/*@Aspect
 @Component
-@EnableAsync
+@EnableAsync*/
 public class LogAspect
 {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-    @Autowired
+  /*  @Autowired*/
     private IOperLogService operLogService;
 
     // 配置织入点
-    @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
+   /* @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")*/
     public void logPointCut()
     {
     }

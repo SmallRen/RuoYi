@@ -18,7 +18,7 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-dept-edit">
-        <input name="sysLaboratoryLd" th:value="${laboratoryId}" type="hidden"/>
+        <input name="sysLaboratoryId" th:value="${laboratoryId}" type="hidden"/>
         <input name="tableId" type="hidden"/>
         <div style="float: left" th:each="e,stat : ${data}">
             <div th:onclick="|seeTableSubscribe(this,${e.tableId},${e.tableStatus})|" class="tableDiv"
@@ -58,6 +58,17 @@
             </div>
         </div>
 
+        <div class="form-group" style="clear: both">
+            <label class="col-sm-3 control-label">当天已预约时间段：</label>
+            <div class="col-sm-8" id="findStatus1">
+            </div>
+        </div>
+
+        <div class="form-group" style="clear: both">
+            <label class="col-sm-3 control-label">明天已预约时间段：</label>
+            <div class="col-sm-8" id="findStatus2">
+            </div>
+        </div>
         <div class="form-group" style="clear: both;margin-top: 50px">
             <div class="form-control-static col-sm-offset-10">
                 <button disabled type="submit" class="btn btn-primary">提交</button>
@@ -80,16 +91,27 @@
                 alert("请选择时间")
                 return
             }
+            //17:00:00 - 21:00:00
             var time1 = dayTime.substring(0, 2);
+            var time11 = dayTime.substring(10, 13);
             var time2 = tomorrowTime.substring(0, 2);
+            var time22 = dayTime.substring(10, 13);
             console.log(time1)
             console.log(time2)
             if (time1 != '' && (time1 * 1) < 8) {
                 alert("请选择正确的范围08:00:00--24:00:00")
                 return
             }
+            else if(Number(time1) > Number(time11)){
+                alert("请不要反选时间")
+                return
+            }
             if (time2 != '' && (time2 * 1) < 8) {
                 alert("请选择正确的范围08:00:00--24:00:00")
+                return
+            }
+            else if(Number(time2) > Number(time22)){
+                alert("请不要反选时间")
                 return
             }
 
@@ -116,6 +138,31 @@
 
         $(obj).css("background", '#000');
         $("button[type=submit]").removeAttr('disabled');
+
+        $.ajax({
+            url: '/laboratory/subscribe/dayTime/' + tableId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                $("#findStatus1").empty();
+
+                result.forEach(function (obj, index) {
+                    $("#findStatus1").append('<label class="form-control">'+obj.dayTime+'</label>')
+                })
+            }
+        })
+
+        $.ajax({
+            url: '/laboratory/subscribe/tomorrowTime/' + tableId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                $("#findStatus2").empty();
+                result.forEach(function (obj, index) {
+                    $("#findStatus2").append('<label class="form-control">'+obj.tomorrowTime+'</label>')
+                })
+            }
+        })
 
     }
 
