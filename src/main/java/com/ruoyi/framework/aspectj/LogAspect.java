@@ -31,18 +31,18 @@ import com.ruoyi.project.system.user.domain.User;
  * 
  * @author ruoyi
  */
-/*@Aspect
+@Aspect
 @Component
-@EnableAsync*/
+@EnableAsync
 public class LogAspect
 {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-  /*  @Autowired*/
+    @Autowired
     private IOperLogService operLogService;
 
     // 配置织入点
-   /* @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")*/
+    @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
     public void logPointCut()
     {
     }
@@ -127,7 +127,7 @@ public class LogAspect
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
      * 
-     * @param joinPoint 切点
+     * @param log 切点
      * @return 方法描述
      * @throws Exception
      */
@@ -151,7 +151,6 @@ public class LogAspect
      * 获取请求的参数，放到log中
      * 
      * @param operLog
-     * @param request
      */
     private void setRequestValue(OperLog operLog)
     {
