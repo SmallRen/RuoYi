@@ -9,5 +9,5 @@ public interface ISubscribeService {
     int insert(Subscribe subscribe);
     List<Subscribe> findAll();
 
-    List<Subscribe> findByLaboratoryId(Long sysLaboratoryId);
+    List<Subscribe> findByTableId(Long tableId);
 }

@@ -72,4 +72,8 @@
     <select id="findLaboratoryByBuildId" resultMap="resultMap" resultType="java.lang.Long">
         select * from sys_laboratory where teach_build_id = #{id}
     </select>
+    <select id="checkDeptExistLaboratory" resultMap="resultMap" parameterType="java.lang.Long">
+          select * from sys_laboratory where dept_id = #{deptId}
+
+    </select>
 </mapper>

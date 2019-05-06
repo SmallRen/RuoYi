@@ -58,11 +58,11 @@
         LEFT JOIN sys_table e on e.table_id=t.table_id
         LEFT JOIN  sys_user s on s.user_id=t.user_id
     </select>
-    <select id="findByLaboratoryId" resultMap="resultMap" parameterType="java.lang.Long">
+    <select id="findByTableId" resultMap="resultMap" parameterType="java.lang.Long">
         SELECT  * FROM subscribe t
         LEFT JOIN sys_laboratory a on t.sys_laboratory_id=a.laboratory_id
         LEFT JOIN teach_build b on b.teach_build_id=a.teach_build_id
         LEFT JOIN sys_table e on e.table_id=t.table_id
-        where  t.sys_laboratory_id=#{sysLaboratoryId}
+        where  t.table_id=#{tableId}
     </select>
 </mapper>

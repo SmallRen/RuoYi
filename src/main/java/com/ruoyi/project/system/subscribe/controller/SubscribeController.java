@@ -45,10 +45,10 @@ public class SubscribeController extends BaseController {
         return getDataTable(list);
     }
 
-    @GetMapping("/tomorrowTime/{sysLaboratoryId}")
+    @GetMapping("/tomorrowTime/{tableId}")
     @ResponseBody
-    public List<Subscribe> tomorrowTime(@PathVariable Long sysLaboratoryId) throws ParseException {
-        List<Subscribe> list = service.findByLaboratoryId(sysLaboratoryId);
+    public List<Subscribe> tomorrowTime(@PathVariable Long tableId) throws ParseException {
+        List<Subscribe> list = service.findByTableId(tableId);
         List<Subscribe> subscribeList = new ArrayList<>();
         for (Subscribe subscribe : list) {
             //2019-05-05 18:00:01 - 2019-05-05 21:01:00
@@ -82,10 +82,10 @@ public class SubscribeController extends BaseController {
 
     }*/
 
-    @GetMapping("/dayTime/{sysLaboratoryId}")
+    @GetMapping("/dayTime/{tableId}")
     @ResponseBody
-    public List<Subscribe> dayTime(@PathVariable Long sysLaboratoryId) {
-        List<Subscribe> list = service.findByLaboratoryId(sysLaboratoryId);
+    public List<Subscribe> dayTime(@PathVariable Long tableId) {
+        List<Subscribe> list = service.findByTableId(tableId);
         List<Subscribe> subscribeList = new ArrayList<>();
         for (Subscribe subscribe : list) {
             //2019-05-05 18:00:01 - 2019-05-05 21:01:00
@@ -119,7 +119,7 @@ public class SubscribeController extends BaseController {
         String datTime = spf.format(new Date());
         String tomTime = spf.format(sDate);
         //校验时间是否在区间内
-        List<Subscribe> list = service.findByLaboratoryId(subscribe.getSysLaboratoryId());
+        List<Subscribe> list = service.findByTableId(subscribe.getTableId());
         for (Subscribe subscribe1 : list) {
             //15:00:00 - 10:00:00
             String dayTime = subscribe.getDayTime();

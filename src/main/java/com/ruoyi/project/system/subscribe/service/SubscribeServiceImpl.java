@@ -23,7 +23,9 @@ public class SubscribeServiceImpl implements ISubscribeService {
     }
 
     @Override
-    public List<Subscribe> findByLaboratoryId(Long sysLaboratoryId) {
-        return subscribeMapper.findByLaboratoryId(sysLaboratoryId);
+    public List<Subscribe> findByTableId(Long tableId) {
+        return subscribeMapper.findByTableId(tableId);
     }
+
+
 }

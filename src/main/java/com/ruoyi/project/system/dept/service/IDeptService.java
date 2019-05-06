@@ -73,4 +73,6 @@ public interface IDeptService
      * @return 结果
      */
     public String checkDeptNameUnique(Dept dept);
+
+    boolean checkDeptExistLaboratory(Long deptId);
 }

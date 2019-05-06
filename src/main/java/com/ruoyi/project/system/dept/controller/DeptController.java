@@ -107,6 +107,10 @@ public class DeptController extends BaseController
 		{
 			return error(1, "部门存在用户,不允许删除");
 		}
+		if (deptService.checkDeptExistLaboratory(deptId))
+		{
+			return error(1, "部门下存在实验室,不允许删除");
+		}
 		if (deptService.deleteDeptById(deptId) > 0)
 		{
 			return success();

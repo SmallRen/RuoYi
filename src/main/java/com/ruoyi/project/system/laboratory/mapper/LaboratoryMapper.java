@@ -45,5 +45,6 @@ public interface LaboratoryMapper {
 
     List<Laboratory> findLaboratoryByBuildId(Long id);
 
+    List<Laboratory> checkDeptExistLaboratory(Long deptId);
 
 }
